@@ -17,6 +17,8 @@ philos = [
         'Descarte',
         [
             'I think, I am.',
+            'had a great weekend in #Munich',
+            '@aristotle wrong again on those motion laws #galileo',
         ],
         [
             'actuspurus',
@@ -28,6 +30,7 @@ philos = [
         'Spinoza',
         [
             'All is one, bruh',
+            'another day grinding the lances #dailygrind',
         ],
         [
             'cogitus',
@@ -41,6 +44,8 @@ philos = [
         'Hume',
         [
             'messed with billiards player everywhere, necesarrily',
+            'just got a new #turban',
+            "@lonelyidealist salamanders aren't real",
         ],
         [
             'cogitus',
@@ -54,6 +59,8 @@ philos = [
         'Aquinas',
         [
             'no happiness after life',
+            "just proved God's existence 5 times over #anotherone",
+            "reading @aristotle, @cogitus won't understand",
         ],
         []
     ),
@@ -63,6 +70,7 @@ philos = [
         'Leibniz',
         [
             "I'm so strange rn",
+            'getting paid to be in Germany #travelstatus',
         ],
         [
             'cogitus', 
@@ -77,6 +85,7 @@ philos = [
         'Kripke',
         [
             'water will always be water',
+            '#favotitethings are #roses, and#otherthings',
         ],
         [
             'actuspurus',
