@@ -33,6 +33,12 @@ def user(request, username):
 def mentions(request, username):
     return HttpResponse("mention page for %s" % username)
 
+def follow(request, username):
+    return HttpResponse("you are now following %s" % username)
+
+def unfollow(request, username):
+    return HttpResponse("you are not following %s" % username)
+
 def kool(request, kool_id):
     return HttpResponse("kool %s" % kool_id)
 

@@ -1,0 +1,32 @@
+{% with user=prof.user kool_list=prof.kool_set.all %}
+
+<h1>{{ user.username }}</h1>
+<p>{{ user.first_name }} {{ user.last_name }} if you wanna be formal</p>
+<p>{{ user.email }}</p>
+
+
+<h3>this user follows:</h3>
+<ul>
+
+{% for follows_prof in prof.follows.all %}
+
+    <li><a href="{% url 'koolack_unscaled:user' follows_prof.user.username %}">{{ follows_prof.user.username }}</a></li>
+
+{% endfor %}
+
+</ul>
+
+<h3>this user is followed by:</h3>
+<ul>
+
+{% for followed_by_prof in prof.followed_by.all %}
+
+    <li><a href="{% url 'koolack_unscaled:user' followed_by_prof.user.username %}">{{ followed_by_prof.user.username }}</a></li>
+
+{% endfor %}
+
+</ul>
+
+{% include 'koolack_unscaled/kool_list.html' %}
+
+{% endwith %}

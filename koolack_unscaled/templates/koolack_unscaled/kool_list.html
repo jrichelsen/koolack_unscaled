@@ -1,0 +1,26 @@
+{% for kool in kool_list %}
+{% with author_user=kool.author.user %}
+
+<table>
+    <tr>
+        <td>{{ author_user.first_name }} {{author_user.last_name}} (<a href="{% url 'koolack_unscaled:user' author_user.username %}">@{{ author_user.username }}</a></td>
+        <td>{{ kool.creation_date|timesince }} ago</td>
+
+        {% if follow_button %}
+
+        <td><a href="{% url 'koolack_unscaled:follow' author_user.username %}">follow</a></td> 
+
+        {% elif unfollow_button %}
+
+        <td><a href="{% url 'koolack_unscaled:unfollow' author_user.username %}">unfollow</a></td> 
+
+        {% endif %}
+
+    </tr>
+    <tr>
+        <td>{{ kool.contents }}</td>
+    </tr>   
+</table>
+
+{% endwith %}
+{% endfor %}
