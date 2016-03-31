@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
 from .models import Profile, Kool
@@ -7,26 +9,28 @@ from .models import Profile, Kool
 def index(request):
     curr_date = datetime.now()
     context = {
+        'username' : request.user.username,
         'curr_date' : curr_date,
     }
     return render(request, 'koolack_unscaled/index.html', context)
 
-def login(request):
-    return HttpResponse('jk, cannot login yet')
-
-def logout(request):
-    return HttpResponse('cannot logout either')
-
 def register(request):
     return HttpResponse('form to register! jk')
 
+@login_required
 def timeline(request):
-    return HttpResponse('this is timeline')
+    context = {
+        'username' : request.user.username,
+        'kool_list' : Kool.objects.filter(author__profile__followed_by=request.user.profile)
+    }
+    return render(request, 'koolack_unscaled/timeline.html', context)
 
 def user(request, username):
-    prof = get_object_or_404(Profile, user__username=username)
+    user = get_object_or_404(User, username=username)
     context = {
-        'prof' : prof,
+        'username' : user.username,
+        'user' : user,
+        'kool_list' : user.kool_set.all().order_by('-creation_date'),
     }
     return render(request, 'koolack_unscaled/user.html', context)
 

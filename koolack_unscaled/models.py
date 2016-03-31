@@ -7,16 +7,19 @@ from django.utils.encoding import python_2_unicode_compatible
 @python_2_unicode_compatible
 class Profile(models.Model):
     user = models.OneToOneField(User)
-    follows = models.ManyToManyField('self', related_name='followed_by', symmetrical=False)
+    follows = models.ManyToManyField(
+        'self',
+        related_name='followed_by',
+        symmetrical=False)
 
     def __str__(self):
         return self.user.username
 
 @python_2_unicode_compatible
 class Kool(models.Model):
-    contents = models.CharField(max_length=140)
-    author = models.ForeignKey(Profile)
+    content = models.CharField(max_length=140)
+    author = models.ForeignKey(User)
     creation_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.contents
+        return self.content

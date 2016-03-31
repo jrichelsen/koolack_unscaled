@@ -8,7 +8,7 @@ from collections import namedtuple
 
 from koolack_unscaled.models import Profile, Kool
 
-DummyUser = namedtuple('DummyUser', ['username', 'first_name', 'last_name', 'kool_contentses', 'follows_usernames'])
+DummyUser = namedtuple('DummyUser', ['username', 'first_name', 'last_name', 'kool_contents', 'follows_usernames'])
 
 philos = [
     DummyUser(
@@ -168,18 +168,18 @@ philos = [
 for philo in philos:
     my_user = User(
         username = philo.username,
-        password = 'koolack_unscaled',
         first_name = philo.first_name,
         last_name = philo.last_name,
         email = 'jrichels+' + philo.username + '@nd.edu',
     )
+    my_user.set_password('koolack_unscaled')
     my_user.save()
 
     my_prof = Profile(user=my_user)
     my_prof.save()
 
-    for kool_contents in philo.kool_contentses:
-        my_prof.kool_set.create(contents=kool_contents)
+    for kool_content in philo.kool_contents:
+        my_user.kool_set.create(content=kool_content)
 
 # make Profiles follow one another (all Profiles must be created first)
 for philo in philos:
