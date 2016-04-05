@@ -1,5 +1,5 @@
 {% extends 'koolack_unscaled/base.html' %}
-{% block title %}{{user.username}} - Koolack Unscaled{% endblock %}
+{% block title %}{{user.username}} - Koolack Unscaled{% endblock title %}
 
 {% block content %}
 <h1>{{ user.username }}</h1>
@@ -31,4 +31,4 @@
 
 {% include 'koolack_unscaled/kool_list.html' %}
 
-{% endblock %}
+{% endblock content %}

@@ -1,6 +1,6 @@
 {% extends 'koolack_unscaled/base.html' %}
 
-{% block title %}Login - Koolack Unscaled{% endblock %}
+{% block title %}Login - Koolack Unscaled{% endblock title %}
 
 {% block content %}
 {% if form.errors %}
@@ -23,4 +23,4 @@
     <input type="submit" value="login" />
     <input type="hidden" name="next" value="{{ next }}" />
 </form>
-{% endblock %}
+{% endblock content %}
