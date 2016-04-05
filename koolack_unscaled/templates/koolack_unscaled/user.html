@@ -1,16 +1,15 @@
 {% extends 'koolack_unscaled/base.html' %}
-{% block title %}{{user.username}} - Koolack Unscaled{% endblock title %}
+{% block title %}{{page_user.username}} - {% endblock title %}
 
 {% block content %}
-<h1>{{ user.username }}</h1>
-<p>{{ user.first_name }} {{ user.last_name }} if you wanna be formal</p>
-<p>{{ user.email }}</p>
-
+<h1>{{ page_user.username }}</h1>
+<p>{{ page_user.first_name }} {{ page_user.last_name }} if you wanna be formal</p>
+<p>{{ page_user.email }}</p>
 
 <h3>this user follows:</h3>
 <ul>
 
-{% for follows_prof in user.profile.follows.all %}
+{% for follows_prof in page_user.profile.follows.all %}
 
     <li><a href="{% url 'koolack_unscaled:user' follows_prof.user.username %}">{{ follows_prof.user.username }}</a></li>
 
@@ -21,7 +20,7 @@
 <h3>this user is followed by:</h3>
 <ul>
 
-{% for followed_by_prof in user.profile.followed_by.all %}
+{% for followed_by_prof in page_user.profile.followed_by.all %}
 
     <li><a href="{% url 'koolack_unscaled:user' followed_by_prof.user.username %}">{{ followed_by_prof.user.username }}</a></li>
 

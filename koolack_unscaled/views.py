@@ -9,8 +9,7 @@ from .models import Profile, Kool
 def index(request):
     curr_date = datetime.now()
     context = {
-        'username' : request.user.username,
-        'curr_date' : curr_date,
+        'auth_user' : request.user,
     }
     return render(request, 'koolack_unscaled/index.html', context)
 
@@ -20,17 +19,17 @@ def register(request):
 @login_required
 def timeline(request):
     context = {
-        'username' : request.user.username,
-        'kool_list' : Kool.objects.filter(author__profile__followed_by=request.user.profile)
+        'auth_user' : request.user,
+        'kool_list' : Kool.objects.filter(author__profile__followed_by=request.user.profile).order_by('-creation_date'),
     }
     return render(request, 'koolack_unscaled/timeline.html', context)
 
 def user(request, username):
-    user = get_object_or_404(User, username=username)
+    page_user = get_object_or_404(User, username=username)
     context = {
-        'username' : user.username,
-        'user' : user,
-        'kool_list' : user.kool_set.all().order_by('-creation_date'),
+        'auth_user' : request.user,
+        'page_user' : page_user,
+        'kool_list' : page_user.kool_set.all().order_by('-creation_date'),
     }
     return render(request, 'koolack_unscaled/user.html', context)
 

@@ -1,8 +1,24 @@
+<!DOCTYPE html>
+<html>
+
 <head>
-    <title>{% block title %}Koolack Unscaled{% endblock title%}</title>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock title%}Koolack Unscaled</title>
 </head>
 
 <h1>Koolack Unscaled</h1>
+
+{% if auth_user.is_authenticated %}
+
+    <p>logged in as {{ auth_user.username }} (<a href="{% url 'koolack_unscaled:logout' %}">logout</a>)</p>
+
+{% else %}
+
+    <p><a href="{% url 'koolack_unscaled:register' %}">register</a></li> or <a href="{% url 'koolack_unscaled:login' %}">login</a></p>
+
+{% endif %}
+
+<hr>
 
 <body>
 {% block content %}{% endblock content%}
@@ -16,3 +32,5 @@
     <a href="notyet">about Koolack</a>
     <a href="notyet">about Koolack</a>
 </footer>
+
+</html>

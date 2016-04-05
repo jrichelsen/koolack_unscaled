@@ -1,10 +1,5 @@
 {% extends 'koolack_unscaled/base.html' %}
-{% block title %}Koolack Unscaled Index{% endblock title %}
 
 {% block content %}
-<ul>
-    <li><a href="{% url 'koolack_unscaled:register' %}">register</a></li>
-    <li><a href="{% url 'koolack_unscaled:login' %}">login</a></li>
-    <li>current time: {{curr_date|date:"D d M Y"}}</li>
-</ul>
+<p>this is the index</p>
 {% endblock content %}
