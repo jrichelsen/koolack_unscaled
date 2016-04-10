@@ -1,3 +1,7 @@
+from django.views.generic import TemplateView
+from django.http import HttpResponseRedirect
+
+
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import User
@@ -6,8 +10,18 @@ from datetime import datetime
 
 from .models import Profile, Kool
 
-def index(request):
-    return render(request, 'koolack_unscaled/index.html')
+class IndexView(TemplateView):
+    template_name = 'koolack_unscaled/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['n_users'] = Profile.objects.count()
+        return context
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return HttpResponseRedirect('/timeline')
+        return super(IndexView, self).dispatch(request, *args, **kwargs)
 
 def register(request):
     return HttpResponse('form to register! jk')

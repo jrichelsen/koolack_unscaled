@@ -5,7 +5,9 @@ from . import views
 
 app_name = 'koolack_unscaled'
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
+        # if authenticated, redirect to timeline
+        # else, display index template
     url(r'^login$', django.contrib.auth.views.login, name='login'),
     url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'}, name='logout'),
     url(r'^register$', views.register, name='register'),
