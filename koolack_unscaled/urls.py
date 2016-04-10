@@ -1,19 +1,27 @@
 from django.conf.urls import url
-import django.contrib.auth.views
+import django.contrib.auth.views as auth_views
+from django.views.generic.edit import CreateView
 
-from . import views
+from . import views, forms
 
 app_name = 'koolack_unscaled'
 urlpatterns = [
-    url(r'^$', views.IndexView.as_view(), name='index'),
-        # if authenticated, redirect to timeline
-        # else, display index template
-    url(r'^login$', django.contrib.auth.views.login, name='login'),
-        # Django's builtin login, remains an enigma...
-        # redirect after successful login handled by project settings.py
-        # login page specified in project settings.py
-    url(r'^logout$', django.contrib.auth.views.logout, {'next_page': '/'}, name='logout'),
-    url(r'^register$', views.register, name='register'),
+    url(r'^$',
+        views.IndexView.as_view(),
+        name='index'),
+    url(r'^register$',
+        CreateView.as_view(
+            form_class=forms.RegisterForm,
+            template_name='registration/register.html',
+            success_url='/login'),
+        name='register'),
+    url(r'^login$',
+        auth_views.login,
+        name='login'),
+    url(r'^logout$',
+        auth_views.logout,
+        {'next_page': '/'},
+        name='logout'),
     url(r'^timeline$', views.timeline, name='timeline'),
     url(r'^user/(?P<username>[a-z]+)/$', views.user, name='user'),
     url(r'^user/(?P<username>[a-z]+)/mentions/$', views.mentions, name='mentions'),

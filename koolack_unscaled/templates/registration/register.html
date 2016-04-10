@@ -1,0 +1,29 @@
+{% extends 'koolack_unscaled/base.html' %}
+
+{% block titleprepend %}Register - {% endblock titleprepend %}
+
+{% block content %}
+{% if form.errors %}
+    <p>error registering user:<p>
+    {{ form.errors }}
+{% endif %}
+
+<form method="post" action="">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>{{ form.username.label_tag }}</td>
+            <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.password1.label_tag }}</td>
+            <td>{{ form.password1 }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.password2.label_tag }}</td>
+            <td>{{ form.password2 }}</td>
+        </tr>
+    </table>
+    <input type="submit" value="register" />
+</form>
+{% endblock content %}

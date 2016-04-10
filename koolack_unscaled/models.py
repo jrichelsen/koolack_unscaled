@@ -15,6 +15,9 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+User.profile = property(lambda u: Profile.objects.get_or_create(user=u)[0])
+
+
 @python_2_unicode_compatible
 class Kool(models.Model):
     content = models.CharField(max_length=140)

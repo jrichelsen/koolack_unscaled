@@ -1,10 +1,11 @@
 {% extends 'koolack_unscaled/base.html' %}
 
-{% block title %}Login - {% endblock title %}
+{% block titleprepend %}Login - {% endblock titleprepend %}
 
 {% block content %}
 {% if form.errors %}
-    <p>username and password don't match, please try again</p>
+    <p>error logging in:<p>
+    {{ form.errors }}
 {% endif %}
 
 <form method="post" action="{% url 'koolack_unscaled:login' %}">
@@ -22,4 +23,6 @@
     <input type="submit" value="login" />
     <input type="hidden" name="next" value="{{ next }}" />
 </form>
+
+<p>Don't have an account? <a href="{% url 'koolack_unscaled:register' %}">Register</a> for one!</p>
 {% endblock content %}
