@@ -3,14 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{% block title %}{% endblock title%}Koolack Unscaled</title>
+    <title>{% block titleprepend %}{% endblock titleprepend %}Koolack Unscaled</title>
 </head>
 
 <h1>Koolack Unscaled</h1>
 
-{% if auth_user.is_authenticated %}
+{% if user.is_authenticated %}
 
-    <p>logged in as {{ auth_user.username }} (<a href="{% url 'koolack_unscaled:logout' %}">logout</a>)</p>
+    <p>logged in as {{ user.username }} (<a href="{% url 'koolack_unscaled:logout' %}">logout</a>)</p>
 
 {% else %}
 

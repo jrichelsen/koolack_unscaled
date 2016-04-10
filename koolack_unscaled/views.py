@@ -7,11 +7,7 @@ from datetime import datetime
 from .models import Profile, Kool
 
 def index(request):
-    curr_date = datetime.now()
-    context = {
-        'auth_user' : request.user,
-    }
-    return render(request, 'koolack_unscaled/index.html', context)
+    return render(request, 'koolack_unscaled/index.html')
 
 def register(request):
     return HttpResponse('form to register! jk')
@@ -19,7 +15,6 @@ def register(request):
 @login_required
 def timeline(request):
     context = {
-        'auth_user' : request.user,
         'kool_list' : Kool.objects.filter(author__profile__followed_by=request.user.profile).order_by('-creation_date'),
     }
     return render(request, 'koolack_unscaled/timeline.html', context)
@@ -27,7 +22,6 @@ def timeline(request):
 def user(request, username):
     page_user = get_object_or_404(User, username=username)
     context = {
-        'auth_user' : request.user,
         'page_user' : page_user,
         'kool_list' : page_user.kool_set.all().order_by('-creation_date'),
     }
