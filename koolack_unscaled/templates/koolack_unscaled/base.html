@@ -9,13 +9,9 @@
 <h1>Koolack Unscaled</h1>
 
 {% if user.is_authenticated %}
-
     <p>logged in as {{ user.username }} (<a href="{% url 'koolack_unscaled:logout' %}">logout</a>)</p>
-
 {% else %}
-
     <p><a href="{% url 'koolack_unscaled:register' %}">register</a></li> or <a href="{% url 'koolack_unscaled:login' %}">login</a></p>
-
 {% endif %}
 
 <hr>
