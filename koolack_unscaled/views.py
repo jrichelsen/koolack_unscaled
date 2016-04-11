@@ -1,10 +1,10 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, View
 from django.http import HttpResponseRedirect
 from django.views.generic.detail import SingleObjectMixin
+from django.shortcuts import get_object_or_404
 
 
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
@@ -24,8 +24,8 @@ class IndexView(TemplateView):
         return super(IndexView, self).dispatch(request, *args, **kwargs)
 
 class TimelineView(SingleObjectMixin, ListView):
-    paginate_by = 15
     template_name = 'koolack_unscaled/timeline.html'
+    paginate_by = 15
 
     def get(self, request, *args, **kwargs):
         self.object = request.user
@@ -35,9 +35,10 @@ class TimelineView(SingleObjectMixin, ListView):
         return Kool.objects.filter(author__profile__followed_by=self.object.profile)
 
 class UserView(SingleObjectMixin, ListView):
-    paginate_by = 2
-    template_name = 'koolack_unscaled/user.html'
+    slug_url_kwarg = 'username'
     slug_field = 'username'
+    template_name = 'koolack_unscaled/user.html'
+    paginate_by = 15
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=User.objects.all())
@@ -46,19 +47,32 @@ class UserView(SingleObjectMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
         context['page_user'] = self.object
+        context['unfollow_button'] = self.request.user.profile.follows.filter(user=self.object).exists()
+        context['follow_button'] = not context['unfollow_button']
         return context
 
     def get_queryset(self):
         return self.object.kool_set.all()
 
-def mentions(request, username):
-    return HttpResponse("mention page for %s" % username)
+class FollowView(SingleObjectMixin, View):
+    model = User
+    slug_url_kwarg = 'username'
+    slug_field = 'username'
 
-def follow(request, username):
-    return HttpResponse("you are now following %s" % username)
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        request.user.profile.follows.add(self.object.profile)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-def unfollow(request, username):
-    return HttpResponse("you are not following %s" % username)
+class UnfollowView(SingleObjectMixin, View):
+    model = User
+    slug_url_kwarg = 'username'
+    slug_field = 'username'
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        request.user.profile.follows.remove(self.object.profile)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def kool(request, kool_id):
     return HttpResponse("kool %s" % kool_id)

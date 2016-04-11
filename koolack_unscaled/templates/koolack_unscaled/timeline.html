@@ -3,9 +3,11 @@
 {% block titleprepend %}Timeline - {% endblock titleprepend %}
 
 {% block content %}
+{% with unfollow_button=True %}
 {% for kool in page_obj %}
     {% include 'koolack_unscaled/kool.html' %}    
 {% endfor %}
+{% endwith %}
 
 <div class="pagination">
     <span class="step-links">
