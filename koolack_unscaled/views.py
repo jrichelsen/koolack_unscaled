@@ -1,12 +1,12 @@
 from django.views.generic import TemplateView, ListView, View
 from django.http import HttpResponseRedirect
 from django.views.generic.detail import SingleObjectMixin
-from django.shortcuts import get_object_or_404
-
+from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 
 from django.http import HttpResponse
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
 
 from .models import Profile, Kool
 from .forms import KoolForm
@@ -90,6 +90,16 @@ class UnfollowView(SingleObjectMixin, View):
 
 class AckView(SingleObjectMixin, View):
     model = Kool
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = {
+            'acker_list' : self.object.acked_by.all(),
+        }
+        return render(request,
+            'koolack_unscaled/ack.html',
+            context)
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()

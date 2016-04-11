@@ -35,10 +35,10 @@ urlpatterns = [
     url(r'^user/(?P<username>\w+)/unfollow$',
         login_required(views.UnfollowView.as_view()),
         name='unfollow'),
-    url(r'^user/(?P<pk>\d+)/ack$',
-        login_required(views.AckView.as_view()),
+    url(r'^kool/(?P<pk>\d+)/ack$',
+        views.AckView.as_view(),
         name='ack'),
-    url(r'^user/(?P<pk>\d+)/unack$',
+    url(r'^kool/(?P<pk>\d+)/unack$',
         login_required(views.UnackView.as_view()),
         name='unack'),
 

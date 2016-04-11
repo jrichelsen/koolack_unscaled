@@ -21,7 +21,12 @@
     </tr>
     <tr>
         <td>{{ kool.content }}</td>
-        <td>{{ kool.acked_by.count }} ack{{ kool.acked_by.count|pluralize }}</td>
+        <td>
+            {% if kool.acked_by.count %}
+                    <a href="{% url 'koolack_unscaled:ack' kool.id %}">{{ kool.acked_by.count }} ack{{ kool.acked_by.count|pluralize }}</a></td>
+            {% else %}
+                    0 acks
+            {% endif %}
         <td>
             <form method="post" action="{% url 'koolack_unscaled:ack' kool.id %}">
                 {% csrf_token %}
