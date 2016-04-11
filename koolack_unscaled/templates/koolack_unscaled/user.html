@@ -1,6 +1,6 @@
 {% extends 'koolack_unscaled/base.html' %}
 
-{% block titleprepend %}{{page_user.username}} - {% endblock titleprepend %}
+{% block titleprepend %}{{ page_user.username }} - {% endblock titleprepend %}
 
 {% block content %}
 <h2>{{ page_user.first_name }} {{ page_user.last_name }} ({{ page_user.username }})</h2>

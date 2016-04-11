@@ -41,8 +41,7 @@ urlpatterns = [
     url(r'^kool/(?P<pk>\d+)/unack$',
         login_required(views.UnackView.as_view()),
         name='unack'),
-
-
-    url(r'^kool/(?P<kool_id>[0-9]+)$', views.kool, name='kool'),
-    url(r'^tag/(?P<tag>[a-z]+)/$', views.tag, name='tag'),
+    url(r'^hashtag/(?P<tag>[^\s]+)/$',
+        views.HashtagView.as_view(),
+        name='hashtag'),
 ]

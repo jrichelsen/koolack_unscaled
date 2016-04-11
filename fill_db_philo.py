@@ -166,12 +166,9 @@ philos = [
 
 # create Profiles (and the Users they contain) and their Kools
 for philo in philos:
-    my_user = User(
-        username = philo.username,
+    my_user = User(username = philo.username,
         first_name = philo.first_name,
-        last_name = philo.last_name,
-        email = 'jrichels+' + philo.username + '@nd.edu',
-    )
+        last_name = philo.last_name)
     my_user.set_password('koolack_unscaled')
     my_user.save()
 

@@ -20,7 +20,7 @@
         {% endif %}
     </tr>
     <tr>
-        <td>{{ kool.content }}</td>
+        <td>{{ kool.href_content|safe }}</td>
         <td>
             {% if kool.acked_by.count %}
                     <a href="{% url 'koolack_unscaled:ack' kool.id %}">{{ kool.acked_by.count }} ack{{ kool.acked_by.count|pluralize }}</a></td>
