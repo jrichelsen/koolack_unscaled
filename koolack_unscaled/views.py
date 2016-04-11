@@ -1,12 +1,12 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.http import HttpResponseRedirect
+from django.views.generic.detail import SingleObjectMixin
 
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from datetime import datetime
 
 from .models import Profile, Kool
 
@@ -23,15 +23,16 @@ class IndexView(TemplateView):
             return HttpResponseRedirect('/timeline')
         return super(IndexView, self).dispatch(request, *args, **kwargs)
 
-def register(request):
-    return HttpResponse('form to register! jk')
+class TimelineView(SingleObjectMixin, ListView):
+    paginate_by = 3
+    template_name = 'koolack_unscaled/timeline.html'
 
-@login_required
-def timeline(request):
-    context = {
-        'kool_list' : Kool.objects.filter(author__profile__followed_by=request.user.profile).order_by('-creation_date'),
-    }
-    return render(request, 'koolack_unscaled/timeline.html', context)
+    def get(self, request, *args, **kwargs):
+        self.object = request.user
+        return super(TimelineView, self).get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return Kool.objects.filter(author__profile__followed_by=self.object.profile)
 
 def user(request, username):
     page_user = get_object_or_404(User, username=username)

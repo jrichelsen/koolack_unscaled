@@ -24,5 +24,8 @@ class Kool(models.Model):
     author = models.ForeignKey(User)
     creation_date = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ['-creation_date']
+
     def __str__(self):
         return self.content

@@ -1,24 +1,14 @@
-{% for kool in kool_list %}
-
 <table>
     <tr>
         <td>{{ kool.author.first_name }} {{kool.author.last_name}} (<a href="{% url 'koolack_unscaled:user' kool.author.username %}">@{{ kool.author.username }})</a></td>
         <td>{{ kool.creation_date|timesince }} ago</td>
-
         {% if follow_button %}
-
-        <td><a href="{% url 'koolack_unscaled:follow' kool.author.username %}">follow</a></td> 
-
+            <td><a href="{% url 'koolack_unscaled:follow' kool.author.username %}">follow</a></td> 
         {% elif unfollow_button %}
-
-        <td><a href="{% url 'koolack_unscaled:unfollow' kool.author.username %}">unfollow</a></td> 
-
+            <td><a href="{% url 'koolack_unscaled:unfollow' kool.author.username %}">unfollow</a></td> 
         {% endif %}
-
     </tr>
     <tr>
         <td>{{ kool.content }}</td>
     </tr>   
 </table>
-
-{% endfor %}

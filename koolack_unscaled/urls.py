@@ -1,6 +1,7 @@
 from django.conf.urls import url
 import django.contrib.auth.views as auth_views
 from django.views.generic.edit import CreateView
+from django.contrib.auth.decorators import login_required
 
 from . import views, forms
 
@@ -22,7 +23,9 @@ urlpatterns = [
         auth_views.logout,
         {'next_page': '/'},
         name='logout'),
-    url(r'^timeline$', views.timeline, name='timeline'),
+    url(r'^timeline$',
+        login_required(views.TimelineView.as_view()),
+        name='timeline'),
     url(r'^user/(?P<username>[a-z]+)/$', views.user, name='user'),
     url(r'^user/(?P<username>[a-z]+)/mentions/$', views.mentions, name='mentions'),
     url(r'^user/(?P<username>[a-z]+)/follow$', views.follow, name='follow'),
