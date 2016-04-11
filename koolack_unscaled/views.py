@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from .models import Profile, Kool
+from .forms import KoolForm
 
 class IndexView(TemplateView):
     template_name = 'koolack_unscaled/index.html'
@@ -33,6 +34,19 @@ class TimelineView(SingleObjectMixin, ListView):
 
     def get_queryset(self):
         return Kool.objects.filter(author__profile__followed_by=self.object.profile)
+
+    def get_context_data(self, **kwargs):
+        context = super(TimelineView, self).get_context_data(**kwargs)
+        context['form'] = KoolForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        kool_form = KoolForm(data=request.POST)
+        if kool_form.is_valid():
+            kool = kool_form.save(commit=False)
+            kool.author = request.user
+            kool.save()
+        return HttpResponseRedirect('/timeline')
 
 class UserView(SingleObjectMixin, ListView):
     slug_url_kwarg = 'username'
