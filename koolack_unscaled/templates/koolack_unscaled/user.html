@@ -3,23 +3,36 @@
 {% block titleprepend %}{{page_user.username}} - {% endblock titleprepend %}
 
 {% block content %}
-<h1>{{ page_user.username }}</h1>
-<p>{{ page_user.first_name }} {{ page_user.last_name }} if you wanna be formal</p>
-<p>{{ page_user.email }}</p>
+<h2>{{ page_user.first_name }} {{ page_user.last_name }} ({{ page_user.username }})</h2>
 
-<h3>this user follows:</h3>
-<ul>
-{% for follows_prof in page_user.profile.follows.all %}
-    <li><a href="{% url 'koolack_unscaled:user' follows_prof.user.username %}">{{ follows_prof.user.username }}</a></li>
-{% endfor %}
-</ul>
-
-<h3>this user is followed by:</h3>
-<ul>
-{% for followed_by_prof in page_user.profile.followed_by.all %}
-    <li><a href="{% url 'koolack_unscaled:user' followed_by_prof.user.username %}">{{ followed_by_prof.user.username }}</a></li>
-{% endfor %}
-</ul>
+<table>
+    <tr>
+        <td>follows:</td>
+        <td>followed by:</td>
+    </tr>
+    <tr>
+        <td>
+            <ul>
+                {% for follows_prof in page_user.profile.follows.all|slice:":8"  %}
+                    <li><a href="{% url 'koolack_unscaled:user' follows_prof.user.username %}">{{ follows_prof.user.username }}</a></li>
+                {% endfor %}
+                {% if page_user.profile.follows.all.8 %}
+                    <p>{{ page_user.profile.follows.count|add:"-8" }} more</p>
+                {% endif %}
+            <ul>
+        </td>
+        <td>
+            <ul>
+                {% for followed_by_prof in page_user.profile.followed_by.all|slice:":8" %}
+                    <li><a href="{% url 'koolack_unscaled:user' followed_by_prof.user.username %}">{{ followed_by_prof.user.username }}</a></li>
+                {% endfor %}
+                {% if page_user.profile.followed_by.all.8 %}
+                    <p>{{ page_user.profile.followed_by.count|add:"-8" }} more</p>
+                {% endif %}
+            </ul>
+        <td>
+    <tr>
+</table>
 
 {% for kool in page_obj %}
     {% include 'koolack_unscaled/kool.html' %}

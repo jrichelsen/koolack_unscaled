@@ -30,7 +30,7 @@ urlpatterns = [
         views.UserView.as_view(),
         name='user'),
     url(r'^user/(?P<username>\w+)/follow$',
-        login_required(views.FollowView.as_view()),
+        views.FollowView.as_view(),
         name='follow'),
     url(r'^user/(?P<username>\w+)/unfollow$',
         login_required(views.UnfollowView.as_view()),

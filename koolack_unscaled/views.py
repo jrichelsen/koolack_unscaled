@@ -61,8 +61,9 @@ class UserView(SingleObjectMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
         context['page_user'] = self.object
-        context['unfollow_button'] = self.request.user.profile.follows.filter(user=self.object).exists()
-        context['follow_button'] = not context['unfollow_button']
+        if self.request.user != self.object:
+            context['unfollow_button'] = self.request.user.profile.follows.filter(user=self.object).exists()
+            context['follow_button'] = not context['unfollow_button']
         return context
 
     def get_queryset(self):
@@ -91,7 +92,6 @@ class UnfollowView(SingleObjectMixin, View):
 class AckView(SingleObjectMixin, View):
     model = Kool
 
-    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         context = {
@@ -101,6 +101,7 @@ class AckView(SingleObjectMixin, View):
             'koolack_unscaled/ack.html',
             context)
 
+    @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         request.user.profile.acks.add(self.object)
