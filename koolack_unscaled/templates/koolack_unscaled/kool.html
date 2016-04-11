@@ -21,5 +21,14 @@
     </tr>
     <tr>
         <td>{{ kool.content }}</td>
+        <td>{{ kool.acked_by.count }} ack{{ kool.acked_by.count|pluralize }}</td>
+        <td>
+            <form method="post" action="{% url 'koolack_unscaled:ack' kool.id %}">
+                {% csrf_token %}
+                <input type="submit" value="ack">
+            </form>
+        </td>
+
+
     </tr>   
 </table>

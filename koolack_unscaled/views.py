@@ -74,6 +74,22 @@ class UnfollowView(SingleObjectMixin, View):
         request.user.profile.follows.remove(self.object.profile)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+class AckView(SingleObjectMixin, View):
+    model = Kool
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        request.user.profile.acks.add(self.object)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+class UnackView(SingleObjectMixin, View):
+    model = Kool
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        request.user.profile.acks.remove(self.object)
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 def kool(request, kool_id):
     return HttpResponse("kool %s" % kool_id)
 
