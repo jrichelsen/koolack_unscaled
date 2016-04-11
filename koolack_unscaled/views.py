@@ -24,7 +24,7 @@ class IndexView(TemplateView):
         return super(IndexView, self).dispatch(request, *args, **kwargs)
 
 class TimelineView(SingleObjectMixin, ListView):
-    paginate_by = 3
+    paginate_by = 15
     template_name = 'koolack_unscaled/timeline.html'
 
     def get(self, request, *args, **kwargs):
@@ -34,13 +34,22 @@ class TimelineView(SingleObjectMixin, ListView):
     def get_queryset(self):
         return Kool.objects.filter(author__profile__followed_by=self.object.profile)
 
-def user(request, username):
-    page_user = get_object_or_404(User, username=username)
-    context = {
-        'page_user' : page_user,
-        'kool_list' : page_user.kool_set.all().order_by('-creation_date'),
-    }
-    return render(request, 'koolack_unscaled/user.html', context)
+class UserView(SingleObjectMixin, ListView):
+    paginate_by = 2
+    template_name = 'koolack_unscaled/user.html'
+    slug_field = 'username'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object(queryset=User.objects.all())
+        return super(UserView, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(UserView, self).get_context_data(**kwargs)
+        context['page_user'] = self.object
+        return context
+
+    def get_queryset(self):
+        return self.object.kool_set.all()
 
 def mentions(request, username):
     return HttpResponse("mention page for %s" % username)
