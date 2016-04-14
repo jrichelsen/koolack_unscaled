@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 @python_2_unicode_compatible
-class Hashtag(models.Model):
+class Ref(models.Model):
     tag = models.CharField(max_length=139)
 
     def __str__(self):
@@ -15,9 +15,9 @@ class Hashtag(models.Model):
 @python_2_unicode_compatible
 class Kool(models.Model):
     content = models.CharField(max_length=140)
-    hashtags = models.ManyToManyField(
-        Hashtag,
-        related_name='tagged_in',
+    refs = models.ManyToManyField(
+        Ref,
+        related_name='reffed_in',
         symmetrical=False)
     href_content = models.TextField(editable=False)
     author = models.ForeignKey(User)
@@ -30,16 +30,16 @@ class Kool(models.Model):
         return self.content
 
     def save(self, *args, **kwargs):        
-        tags = set(part[1:] for part in self.content.split() if part.startswith('#'))
+        tags = set(part[1:] for part in self.content.split() if part.startswith('$'))
         href_tokens = list()
         for token in self.content.split():
             if token[1:] in tags:
-                token = '<a href="' + reverse('koolack_unscaled:hashtag', args=[token[1:]]) + '">' + token + '</a>'
+                token = '<a href="' + reverse('koolack_unscaled:ref', args=[token[1:]]) + '">' + token + '</a>'
             href_tokens.append(token)
         self.href_content = ' '.join(href_tokens)
         super(Kool, self).save(*args, **kwargs)
         for tag in tags:
-            self.hashtags.add(Hashtag.objects.get_or_create(tag=tag)[0])
+            self.refs.add(Ref.objects.get_or_create(tag=tag)[0])
 
 @python_2_unicode_compatible
 class Profile(models.Model):

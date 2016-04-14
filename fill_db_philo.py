@@ -17,8 +17,8 @@ philos = [
         'Descarte',
         [
             'I think, I am.',
-            'had a great weekend in #Munich',
-            '@aristotle wrong again on those motion laws #galileo',
+            'had a great weekend in $Munich',
+            '@aristotle wrong again on those motion laws $galileo',
         ],
         [
             'actuspurus',
@@ -30,7 +30,7 @@ philos = [
         'Spinoza',
         [
             'All is one, bruh',
-            'another day grinding the lances #dailygrind',
+            'another day grinding the lances $dailygrind',
         ],
         [
             'cogitus',
@@ -44,7 +44,7 @@ philos = [
         'Hume',
         [
             'messed with billiards player everywhere, necesarrily',
-            'just got a new #turban',
+            'just got a new $turban',
             "@lonelyidealist salamanders aren't real",
         ],
         [
@@ -59,7 +59,7 @@ philos = [
         'Aquinas',
         [
             'no happiness after life',
-            "just proved God's existence 5 times over #anotherone",
+            "just proved God's existence 5 times over $anotherone",
             "reading @aristotle, @cogitus won't understand",
         ],
         []
@@ -70,7 +70,7 @@ philos = [
         'Leibniz',
         [
             "I'm so strange rn",
-            'getting paid to be in Germany #travelstatus',
+            'getting paid to be in Germany $travelstatus',
         ],
         [
             'cogitus', 
@@ -85,7 +85,7 @@ philos = [
         'Kripke',
         [
             'water will always be water',
-            '#favotitethings are #roses, and#otherthings',
+            '$favotitethings are $roses, and$otherthings',
         ],
         [
             'actuspurus',
@@ -133,7 +133,7 @@ philos = [
         'John',
         'Locke',
         [
-            '#medschoolstinks',
+            '$medschoolstinks',
         ],
         [
             'cogitus',
@@ -145,7 +145,7 @@ philos = [
         'Thomas',
         'Smith',
         [
-            "ready for my philo class, it's #popping",
+            "ready for my philo class, it's $popping",
             "who else things @one is the greatest?!",
             "dark caves scare me",
         ],
