@@ -1,9 +1,10 @@
 from django.views.generic import TemplateView, ListView, View
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import User
-from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
@@ -29,6 +30,7 @@ class TimelineView(SingleObjectMixin, ListView):
     template_name = 'koolack_unscaled/timeline.html'
     paginate_by = 15
 
+    @method_decorator(never_cache)
     def get(self, request, *args, **kwargs):
         self.object = request.user
         return super(TimelineView, self).get(request, *args, **kwargs)
@@ -55,6 +57,7 @@ class UserView(SingleObjectMixin, ListView):
     template_name = 'koolack_unscaled/user.html'
     paginate_by = 15
 
+    @method_decorator(never_cache)
     def get(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=User.objects.all())
         return super(UserView, self).get(request, *args, **kwargs)
