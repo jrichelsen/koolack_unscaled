@@ -30,10 +30,13 @@ class Kool(models.Model):
         return self.content
 
     def save(self, *args, **kwargs):        
+        usernames = set(part[1:] for part in self.content.split() if part.startswith('&'))
         tags = set(part[1:] for part in self.content.split() if part.startswith('$'))
         href_tokens = list()
         for token in self.content.split():
-            if token[1:] in tags:
+            if token[0] == '&' and token[1:] in usernames:
+                token = '<a href="' + reverse('koolack_unscaled:user', args=[token[1:]]) + '">' + token + '</a>'
+            elif token[0] == '$' and token[1:] in tags:
                 token = '<a href="' + reverse('koolack_unscaled:ref', args=[token[1:]]) + '">' + token + '</a>'
             href_tokens.append(token)
         self.href_content = ' '.join(href_tokens)

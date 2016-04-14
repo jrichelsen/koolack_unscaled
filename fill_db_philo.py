@@ -18,7 +18,7 @@ philos = [
         [
             'I think, I am.',
             'had a great weekend in $Munich',
-            '@aristotle wrong again on those motion laws $galileo',
+            '&aristotle wrong again on those motion laws $galileo',
         ],
         [
             'actuspurus',
@@ -45,7 +45,7 @@ philos = [
         [
             'messed with billiards player everywhere, necesarrily',
             'just got a new $turban',
-            "@lonelyidealist salamanders aren't real",
+            "&lonelyidealist salamanders aren't real",
         ],
         [
             'cogitus',
@@ -60,7 +60,7 @@ philos = [
         [
             'no happiness after life',
             "just proved God's existence 5 times over $anotherone",
-            "reading @aristotle, @cogitus won't understand",
+            "reading &aristotle, &cogitus won't understand",
         ],
         []
     ),
@@ -146,7 +146,7 @@ philos = [
         'Smith',
         [
             "ready for my philo class, it's $popping",
-            "who else things @one is the greatest?!",
+            "who else things &one is the greatest?!",
             "dark caves scare me",
         ],
         [
