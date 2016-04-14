@@ -9,7 +9,7 @@
 <h1>Koolack Unscaled</h1>
 
 {% if request.user.is_authenticated %}
-    <p>logged in as {{ request.user.username }} (<a href="{% url 'koolack_unscaled:logout' %}">logout</a>)</p>
+    <p>logged in as <a href="{% url 'koolack_unscaled:user' request.user.username %}">{{ request.user.username }}</a> (<a href="{% url 'koolack_unscaled:logout' %}">logout</a>)</p>
 {% else %}
     <p><a href="{% url 'koolack_unscaled:register' %}">register</a></li> or <a href="{% url 'koolack_unscaled:login' %}">login</a></p>
 {% endif %}
@@ -21,12 +21,9 @@
 </body>
 
 <footer>
-    <a href="notyet">about Koolack</a>
-    <a href="notyet">privacy policy</a>
-    <a href="notyet">contact developers</a>
+    <a href="{% url 'koolack_unscaled:about' %}">about Koolack</a>
+    <a href="{% url 'koolack_unscaled:privacy' %}">privacy policy</a>
     <a href="https://www3.nd.edu/~dthain/courses/cse40822/spring2016/">CSE40175 at Notre Dame</a>
-    <a href="notyet">about Koolack</a>
-    <a href="notyet">about Koolack</a>
 </footer>
 
 </html>

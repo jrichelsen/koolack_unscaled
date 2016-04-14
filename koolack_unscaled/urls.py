@@ -44,4 +44,10 @@ urlpatterns = [
     url(r'^hashtag/(?P<tag>[^\s]+)/$',
         views.HashtagView.as_view(),
         name='hashtag'),
+    url(r'^about$',
+        views.about,
+        name='about'),
+    url(r'^privacy$',
+        views.privacy,
+        name='privacy'),
 ]

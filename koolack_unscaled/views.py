@@ -136,3 +136,10 @@ class HashtagView(SingleObjectMixin, ListView):
 
     def get_queryset(self):
         return self.object.tagged_in.all()
+
+def about(request):
+    return render(request, 'koolack_unscaled/about.html')
+
+def privacy(request):
+    return render(request, 'koolack_unscaled/privacy.html')
+
