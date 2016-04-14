@@ -63,8 +63,11 @@ class UserView(SingleObjectMixin, ListView):
         context = super(UserView, self).get_context_data(**kwargs)
         context['page_user'] = self.object
         if self.request.user != self.object:
-            context['unfollow_button'] = self.request.user.profile.follows.filter(user=self.object).exists()
-            context['follow_button'] = not context['unfollow_button']
+            if self.request.user.is_authenticated():
+                context['unfollow_button'] = self.request.user.profile.follows.filter(user=self.object).exists()
+                context['follow_button'] = not context['unfollow_button']
+            else:
+                context['follow_button'] = True
         return context
 
     def get_queryset(self):
