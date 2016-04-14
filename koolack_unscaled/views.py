@@ -1,5 +1,6 @@
 from django.views.generic import TemplateView, ListView, View
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
@@ -21,7 +22,7 @@ class IndexView(TemplateView):
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
-            return HttpResponseRedirect('/timeline')
+            return HttpResponseRedirect(reverse('koolack_unscaled:timeline'))
         return super(IndexView, self).dispatch(request, *args, **kwargs)
 
 class TimelineView(SingleObjectMixin, ListView):
@@ -46,7 +47,7 @@ class TimelineView(SingleObjectMixin, ListView):
             kool = kool_form.save(commit=False)
             kool.author = request.user
             kool.save()
-        return HttpResponseRedirect('/timeline')
+        return HttpResponseRedirect(reverse('koolack_unscaled:timeline'))
 
 class UserView(SingleObjectMixin, ListView):
     slug_url_kwarg = 'username'
