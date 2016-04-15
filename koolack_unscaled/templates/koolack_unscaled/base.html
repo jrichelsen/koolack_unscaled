@@ -6,7 +6,7 @@
     <title>{% block titleprepend %}{% endblock titleprepend %}Koolack Unscaled</title>
 </head>
 
-<h1>Koolack Unscaled</h1>
+<h1><a href="{% url 'koolack_unscaled:index' %}">Koolack Unscaled</a></h1>
 
 {% if request.user.is_authenticated %}
     <p>logged in as <a href="{% url 'koolack_unscaled:user' request.user.username %}">{{ request.user.username }}</a> (<a href="{% url 'koolack_unscaled:logout' %}">logout</a>)</p>
