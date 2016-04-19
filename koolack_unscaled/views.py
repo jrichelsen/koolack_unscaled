@@ -140,9 +140,8 @@ class RefView(SingleObjectMixin, ListView):
     def get_queryset(self):
         return self.object.reffed_in.all()
 
-def about(request):
-    return render(request, 'koolack_unscaled/about.html')
+class AboutView(TemplateView):
+    template_name = 'koolack_unscaled/about.html'
 
-def privacy(request):
-    return render(request, 'koolack_unscaled/privacy.html')
-
+class PrivacyView(TemplateView):
+    template_name = 'koolack_unscaled/privacy.html'

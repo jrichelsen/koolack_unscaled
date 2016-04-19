@@ -45,9 +45,9 @@ urlpatterns = [
         views.RefView.as_view(),
         name='ref'),
     url(r'^about$',
-        views.about,
+        views.AboutView.as_view(),
         name='about'),
     url(r'^privacy$',
-        views.privacy,
+        views.PrivacyView.as_view(),
         name='privacy'),
 ]
