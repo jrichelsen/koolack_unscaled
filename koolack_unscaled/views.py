@@ -10,7 +10,7 @@ from django.shortcuts import render
 
 from django.http import HttpResponse
 
-from .models import Profile, Kool, Ref
+from .models import Profile, Kool, Hashtag
 from .forms import KoolForm
 
 class IndexView(TemplateView):
@@ -122,23 +122,23 @@ class UnackView(SingleObjectMixin, View):
         request.user.profile.acks.remove(self.object)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-class RefView(SingleObjectMixin, ListView):
-    slug_url_kwarg = 'ref'
+class HashtagView(SingleObjectMixin, ListView):
+    slug_url_kwarg = 'tag'
     slug_field = 'tag'
-    template_name = 'koolack_unscaled/ref.html'
+    template_name = 'koolack_unscaled/hashtag.html'
     paginate_by = 15
 
     def get(self, request, *args, **kwargs):
-        self.object = self.get_object(queryset=Ref.objects.all())
-        return super(RefView, self).get(request, *args, **kwargs)
+        self.object = self.get_object(queryset=Hashtag.objects.all())
+        return super(HashtagView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(RefView, self).get_context_data(**kwargs)
-        context['ref'] = self.object
+        context = super(HashtagView, self).get_context_data(**kwargs)
+        context['hashtag'] = self.object
         return context
 
     def get_queryset(self):
-        return self.object.reffed_in.all()
+        return self.object.hashtagged_in.all()
 
 class AboutView(TemplateView):
     template_name = 'koolack_unscaled/about.html'

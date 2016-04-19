@@ -1,9 +1,9 @@
 {% extends 'koolack_unscaled/base.html' %}
 
-{% block titleprepend %}${{ ref.tag }} - {% endblock titleprepend %}
+{% block titleprepend %}#{{ hashtag.tag }} - {% endblock titleprepend %}
 
 {% block content %}
-<h2>Kools with ${{ ref.tag }}</h2>
+<h2>Kools with #{{ hashtag.tag }}</h2>
 
 {% for kool in page_obj %}
     {% include 'koolack_unscaled/kool.html' %}

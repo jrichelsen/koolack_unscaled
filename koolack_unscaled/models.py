@@ -3,10 +3,11 @@ from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.html import escape
 from django.core.urlresolvers import reverse
 
 @python_2_unicode_compatible
-class Ref(models.Model):
+class Hashtag(models.Model):
     tag = models.CharField(max_length=139)
 
     def __str__(self):
@@ -15,9 +16,9 @@ class Ref(models.Model):
 @python_2_unicode_compatible
 class Kool(models.Model):
     content = models.CharField(max_length=140)
-    refs = models.ManyToManyField(
-        Ref,
-        related_name='reffed_in',
+    hashtags = models.ManyToManyField(
+        Hashtag,
+        related_name='hashtagged_in',
         symmetrical=False)
     href_content = models.TextField(editable=False)
     author = models.ForeignKey(User)
@@ -29,20 +30,21 @@ class Kool(models.Model):
     def __str__(self):
         return self.content
 
-    def save(self, *args, **kwargs):        
-        usernames = set(part[1:] for part in self.content.split() if part.startswith('&'))
-        tags = set(part[1:] for part in self.content.split() if part.startswith('$'))
+    def save(self, *args, **kwargs):
+        self.content = escape(self.content)        
+        usernames = set(part[1:] for part in self.content.split() if part.startswith('@'))
+        tags = set(part[1:] for part in self.content.split() if part.startswith('#'))
         href_tokens = list()
         for token in self.content.split():
-            if token[0] == '&' and token[1:] in usernames:
+            if token[0] == '@' and token[1:] in usernames:
                 token = '<a href="' + reverse('koolack_unscaled:user', args=[token[1:]]) + '">' + token + '</a>'
-            elif token[0] == '$' and token[1:] in tags:
-                token = '<a href="' + reverse('koolack_unscaled:ref', args=[token[1:]]) + '">' + token + '</a>'
+            elif token[0] == '#' and token[1:] in tags:
+                token = '<a href="' + reverse('koolack_unscaled:hashtag', args=[token[1:]]) + '">' + token + '</a>'
             href_tokens.append(token)
         self.href_content = ' '.join(href_tokens)
         super(Kool, self).save(*args, **kwargs)
         for tag in tags:
-            self.refs.add(Ref.objects.get_or_create(tag=tag)[0])
+            self.hashtags.add(Hashtag.objects.get_or_create(tag=tag)[0])
 
 @python_2_unicode_compatible
 class Profile(models.Model):
