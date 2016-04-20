@@ -122,5 +122,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # custom addition
+PROJECT_ROOT = os.path.dirname(__file__)
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+MEDIA_URL = '/media/'
+
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/timeline'

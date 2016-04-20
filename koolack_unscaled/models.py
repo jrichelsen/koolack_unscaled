@@ -1,10 +1,11 @@
 from __future__ import unicode_literals
-
 from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.html import escape
 from django.core.urlresolvers import reverse
+from django.dispatch.dispatcher import receiver
+from django.db.models.signals import pre_delete
 
 @python_2_unicode_compatible
 class Hashtag(models.Model):
@@ -21,6 +22,7 @@ class Kool(models.Model):
         related_name='hashtagged_in',
         symmetrical=False)
     href_content = models.TextField(editable=False)
+    image = models.ImageField(null=True)
     author = models.ForeignKey(User)
     creation_date = models.DateTimeField(auto_now_add=True)
 
@@ -45,6 +47,10 @@ class Kool(models.Model):
         super(Kool, self).save(*args, **kwargs)
         for tag in tags:
             self.hashtags.add(Hashtag.objects.get_or_create(tag=tag)[0])
+
+@receiver(pre_delete, sender=Kool)
+def kool_delete(sender, instance, **kwargs):
+    instance.image.delete(False)
 
 @python_2_unicode_compatible
 class Profile(models.Model):

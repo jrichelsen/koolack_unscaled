@@ -1,12 +1,16 @@
-# needed to access Django
 import os, django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "koolack_unscaled_proj.settings")
 django.setup()
 
-from django.contrib.auth.models import User
 from collections import namedtuple
+import random
+
+from django.contrib.auth.models import User
+from django.core.files import File
 
 from koolack_unscaled.models import Profile, Kool
+
+IMAGE_FNS = frozenset(['bear.jpg', 'clown.jpg', 'whale.jpg'])
 
 DummyUser = namedtuple('DummyUser', ['username', 'first_name', 'last_name', 'kool_contents', 'follows_usernames'])
 
@@ -164,6 +168,11 @@ philos = [
     ),
 ]
 
+# create Django file objects from images
+images = list()
+for IMAGE_FN in IMAGE_FNS:
+    images.append(File(open(IMAGE_FN)))
+
 # create Profiles (and the Users they contain) and their Kools
 for philo in philos:
     my_user = User(username = philo.username,
@@ -176,7 +185,9 @@ for philo in philos:
     my_prof.save()
 
     for kool_content in philo.kool_contents:
-        my_user.kool_set.create(content=kool_content)
+        my_user.kool_set.create(
+            content=kool_content,
+            image=random.choice(images))
 
 # make Profiles follow one another (all Profiles must be created first)
 for philo in philos:

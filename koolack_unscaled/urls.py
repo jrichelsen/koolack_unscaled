@@ -2,6 +2,8 @@ from django.conf.urls import url
 import django.contrib.auth.views as auth_views
 from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
+from django.conf.urls import patterns
 
 from . import views, forms
 
@@ -51,3 +53,9 @@ urlpatterns = [
         views.PrivacyView.as_view(),
         name='privacy'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^media/(?P<path>.*)$',
+        'django.views.static.serve',
+        {'document_root': settings.MEDIA_ROOT}))
