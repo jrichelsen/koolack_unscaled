@@ -2,6 +2,8 @@ import os, django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "koolack_unscaled_proj.settings")
 django.setup()
 
+from os import listdir
+from os.path import isfile, join
 from collections import namedtuple
 import random
 
@@ -10,7 +12,9 @@ from django.core.files import File
 
 from koolack_unscaled.models import Profile, Kool
 
-IMAGE_FNS = frozenset(['bear.jpg', 'clown.jpg', 'whale.jpg'])
+IMAGE_DIRN = 'test_images'
+
+images = [File(open(join(IMAGE_DIRN, f))) for f in listdir(IMAGE_DIRN) if isfile(join(IMAGE_DIRN, f))]
 
 DummyUser = namedtuple('DummyUser', ['username', 'first_name', 'last_name', 'kool_contents', 'follows_usernames'])
 
@@ -168,16 +172,12 @@ philos = [
     ),
 ]
 
-# create Django file objects from images
-images = list()
-for IMAGE_FN in IMAGE_FNS:
-    images.append(File(open(IMAGE_FN)))
-
 # create Profiles (and the Users they contain) and their Kools
 for philo in philos:
-    my_user = User(username = philo.username,
-        first_name = philo.first_name,
-        last_name = philo.last_name)
+    my_user = User(
+        username=philo.username,
+        first_name=philo.first_name,
+        last_name=philo.last_name)
     my_user.set_password('koolack_unscaled')
     my_user.save()
 
