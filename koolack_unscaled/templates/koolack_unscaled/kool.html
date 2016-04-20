@@ -34,5 +34,7 @@
             </form>
         </td>
     </tr>   
-    <tr><td><img src="{{ kool.image.url }}"><td></tr>
+    {% if kool.image %}
+        <tr><td><img src="{{ kool.image.url }}"><td></tr>
+    {% endif %}
 </table>

@@ -34,6 +34,14 @@
     <tr>
 </table>
 
+{% if form %}
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="post">
+    </form>
+{% endif %}
+
 {% for kool in page_obj %}
     {% include 'koolack_unscaled/kool.html' %}
 {% endfor %}

@@ -65,7 +65,9 @@ class UserView(SingleObjectMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
         context['page_user'] = self.object
-        if self.request.user != self.object:
+        if self.request.user == self.object:
+            context['form'] = KoolForm()
+        else:
             if self.request.user.is_authenticated():
                 context['unfollow_button'] = self.request.user.profile.follows.filter(user=self.object).exists()
                 context['follow_button'] = not context['unfollow_button']
@@ -75,6 +77,17 @@ class UserView(SingleObjectMixin, ListView):
 
     def get_queryset(self):
         return self.object.kool_set.all()
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object(queryset=User.objects.all())
+        kool_form = KoolForm(data=request.POST)
+        if kool_form.is_valid():
+            kool = kool_form.save(commit=False)
+            kool.author = request.user
+            kool.save()
+        return HttpResponseRedirect(reverse('koolack_unscaled:user', kwargs={'username': self.object.username}))
+
 
 class FollowView(SingleObjectMixin, View):
     model = User
