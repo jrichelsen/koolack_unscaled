@@ -1,12 +1,15 @@
 {% extends 'koolack_unscaled/base.html' %}
 
-{% block titleprepend %}Acks for {{ kool.author }} Kool - {% endblock titleprepend %}
+{% block titleprepend %}Acks - {% endblock titleprepend %}
 
 {% block content %}
 <h3>the following users Acked this Kool:</h3>
 <ul>
-{% for acker in acker_list %}
-    <li><a href="{% url 'koolack_unscaled:user' acker.user.username %}">{{ acker.user.username }}</a>
-{% endfor %}
+    {% for acker_profile in page_obj %}
+        <li><a href="{% url 'koolack_unscaled:user' acker_profile.user.username %}">{{ acker_profile.user.username }}</a>
+    {% endfor %}
 </ul>
+
+{% include 'koolack_unscaled/pagination.html' %}
+
 {% endblock content %}

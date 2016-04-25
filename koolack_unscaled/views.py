@@ -105,36 +105,27 @@ class FollowView(SingleObjectMixin, View):
             request.user.profile.follows.add(self.object.profile)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-class AckView(SingleObjectMixin, View):
-    model = Kool
+class AckView(SingleObjectMixin, ListView):
+    template_name = 'koolack_unscaled/ack.html'
+    paginate_by = KOOLS_PER_PAGE
 
     def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context = {
-            'acker_list' : self.object.acked_by.all(),
-        }
-        return render(request,
-            'koolack_unscaled/ack.html',
-            context)
+        self.object = self.get_object(queryset=Kool.objects.all())
+        return super(AckView, self).get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return self.object.acked_by.all()
 
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
+        self.object = self.get_object(queryset=Kool.objects.all())
         request.user.profile.acks.add(self.object)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-class UnackView(SingleObjectMixin, View):
-    model = Kool
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        request.user.profile.acks.remove(self.object)
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
 class HashtagView(SingleObjectMixin, ListView):
+    template_name = 'koolack_unscaled/hashtag.html'
     slug_url_kwarg = 'tag'
     slug_field = 'tag'
-    template_name = 'koolack_unscaled/hashtag.html'
     paginate_by = 15
 
     def get(self, request, *args, **kwargs):
@@ -143,7 +134,6 @@ class HashtagView(SingleObjectMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(HashtagView, self).get_context_data(**kwargs)
-        context['hashtag'] = self.object
         return context
 
     def get_queryset(self):
@@ -151,6 +141,3 @@ class HashtagView(SingleObjectMixin, ListView):
 
 class AboutView(TemplateView):
     template_name = 'koolack_unscaled/about.html'
-
-class PrivacyView(TemplateView):
-    template_name = 'koolack_unscaled/privacy.html'

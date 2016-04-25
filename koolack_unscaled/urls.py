@@ -41,18 +41,12 @@ urlpatterns = [
     url(r'^kool/(?P<pk>\d+)/ack$',
         views.AckView.as_view(),
         name='ack'),
-    url(r'^kool/(?P<pk>\d+)/unack$',
-        login_required(views.UnackView.as_view()),
-        name='unack'),
     url(r'^hashtag/(?P<tag>[^\s]+)/$',
         views.HashtagView.as_view(),
         name='hashtag'),
     url(r'^about$',
         views.AboutView.as_view(),
         name='about'),
-    url(r'^privacy$',
-        views.PrivacyView.as_view(),
-        name='privacy'),
 ]
 
 if settings.DEBUG:
