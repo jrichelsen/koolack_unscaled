@@ -5,10 +5,10 @@ from django.views.generic.list import MultipleObjectMixin
 from django.views.generic.detail import SingleObjectMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
 
 from .models import Profile, Kool, Hashtag
 from .forms import KoolForm
@@ -35,6 +35,7 @@ class TimelineView(MultipleObjectMixin, CreateView):
     paginate_by = KOOLS_PER_PAGE
     success_url = reverse_lazy('koolack_unscaled:timeline')
 
+    @method_decorator(never_cache)
     def get(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
         return super(TimelineView, self).get(request, *args, **kwargs)
@@ -42,52 +43,53 @@ class TimelineView(MultipleObjectMixin, CreateView):
     def get_queryset(self):
         return Kool.objects.filter(author__profile__followed_by=self.request.user.profile)
 
+    def post(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        return super(TimelineView, self).post(request, *args, **kwargs)
+
     def form_valid(self, form):
-        print form.fields['image'].required
         form.instance.author = self.request.user
         return super(TimelineView, self).form_valid(form)
 
-class UserView(SingleObjectMixin, ListView):
-    slug_url_kwarg = 'username'
-    slug_field = 'username'
+class UserView(MultipleObjectMixin, CreateView):
     template_name = 'koolack_unscaled/user.html'
-    paginate_by = 15
+    model = Kool
+    form_class = KoolForm
+    paginate_by = KOOLS_PER_PAGE
 
     @method_decorator(never_cache)
     def get(self, request, *args, **kwargs):
-        self.object = self.get_object(queryset=User.objects.all())
+        self.page_user = get_object_or_404(User, username=self.kwargs['username'])
+        self.object_list = self.get_queryset()
         return super(UserView, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(UserView, self).get_context_data(**kwargs)
-        context['page_user'] = self.object
-        if self.request.user == self.object:
-            context['form'] = KoolForm()
+        context['page_user'] = self.page_user
+        if self.request.user != self.page_user:
+            context.pop('form')
         else:
             if self.request.user.is_authenticated():
-                context['unfollow_button'] = self.request.user.profile.follows.filter(user=self.object).exists()
+                context['unfollow_button'] = self.request.user.profile.follows.filter(user=self.page_user).exists()
                 context['follow_button'] = not context['unfollow_button']
             else:
                 context['follow_button'] = True
         return context
 
     def get_queryset(self):
-        return self.object.kool_set.all()
+        return self.page_user.kool_set.all()
 
-    @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
-        self.object = self.get_object(queryset=User.objects.all())
-        form = KoolForm(request.POST, request.FILES)
-        print form
-        if form.is_valid():
-            kool = form.save(commit=False)
-            kool.author = request.user
-            kool.save()
-            return HttpResponseRedirect(reverse('koolack_unscaled:user', kwargs={'username': self.object.username}))
-        else:
-            context = self.get_context_data()
-            context['form'] = form
-            return render(request, 'koolack_unscaled/user.html', context)            
+        self.page_user = get_object_or_404(User, username=self.kwargs['username'])
+        self.object_list = self.get_queryset()
+        return super(UserView, self).post(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super(UserView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('koolack_unscaled:user', kwargs={'username': self.kwargs['username']})
 
 class FollowView(SingleObjectMixin, View):
     model = User
