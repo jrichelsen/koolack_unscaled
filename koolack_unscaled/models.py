@@ -1,4 +1,6 @@
 from __future__ import unicode_literals
+import Image
+
 from django.utils.encoding import python_2_unicode_compatible
 from django.db import models
 from django.contrib.auth.models import User
@@ -6,6 +8,9 @@ from django.utils.html import escape
 from django.core.urlresolvers import reverse
 from django.dispatch.dispatcher import receiver
 from django.db.models.signals import pre_delete
+
+MAX_IMAGE_HEIGHT = 500
+MAX_IMAGE_WIDTH = 1000
 
 @python_2_unicode_compatible
 class Hashtag(models.Model):
@@ -45,8 +50,18 @@ class Kool(models.Model):
             href_tokens.append(token)
         self.href_content = ' '.join(href_tokens)
         super(Kool, self).save(*args, **kwargs)
+
         for tag in tags:
             self.hashtags.add(Hashtag.objects.get_or_create(tag=tag)[0])
+
+        if self.image:
+            my_image = Image.open(self.image)
+            (width, height) = my_image.size
+            factor = min(MAX_IMAGE_WIDTH / float(width), MAX_IMAGE_HEIGHT / float(height))
+            if (factor < 1):
+                new_size = [int(d*factor) for d in my_image.size]
+                my_image = my_image.resize(new_size, Image.ANTIALIAS)
+                my_image.save(self.image.path)
 
 @receiver(pre_delete, sender=Kool)
 def kool_delete(sender, instance, **kwargs):
