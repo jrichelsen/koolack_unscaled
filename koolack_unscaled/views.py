@@ -5,6 +5,7 @@ from django.views.generic.list import MultipleObjectMixin
 from django.views.generic.detail import SingleObjectMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
@@ -41,7 +42,7 @@ class TimelineView(MultipleObjectMixin, CreateView):
         return super(TimelineView, self).get(request, *args, **kwargs)
 
     def get_queryset(self):
-        return Kool.objects.filter(author__profile__followed_by=self.request.user.profile)
+        return Kool.objects.filter(Q(author__profile__followed_by=self.request.user.profile) | Q(author=self.request.user))
 
     def post(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
