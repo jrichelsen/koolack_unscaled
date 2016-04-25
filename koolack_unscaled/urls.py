@@ -36,7 +36,7 @@ urlpatterns = [
         login_required(views.FollowView.as_view()),
         name='follow'),
     url(r'^user/(?P<username>[^\s]+)/unfollow$',
-        login_required(views.UnfollowView.as_view()),
+        login_required(views.FollowView.as_view(unfollow=True)),
         name='unfollow'),
     url(r'^kool/(?P<pk>\d+)/ack$',
         views.AckView.as_view(),

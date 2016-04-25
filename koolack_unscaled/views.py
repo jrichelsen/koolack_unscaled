@@ -68,7 +68,6 @@ class UserView(MultipleObjectMixin, CreateView):
         context['page_user'] = self.page_user
         if self.request.user != self.page_user:
             context.pop('form')
-        else:
             if self.request.user.is_authenticated():
                 context['unfollow_button'] = self.request.user.profile.follows.filter(user=self.page_user).exists()
                 context['follow_button'] = not context['unfollow_button']
@@ -95,20 +94,14 @@ class FollowView(SingleObjectMixin, View):
     model = User
     slug_url_kwarg = 'username'
     slug_field = 'username'
+    unfollow = False
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        request.user.profile.follows.add(self.object.profile)
-        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-class UnfollowView(SingleObjectMixin, View):
-    model = User
-    slug_url_kwarg = 'username'
-    slug_field = 'username'
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        request.user.profile.follows.remove(self.object.profile)
+        if self.unfollow:
+            request.user.profile.follows.remove(self.object.profile)
+        else:
+            request.user.profile.follows.add(self.object.profile)
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 class AckView(SingleObjectMixin, View):
