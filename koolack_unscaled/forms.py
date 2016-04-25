@@ -6,8 +6,8 @@ from django.forms import ModelForm
 from .models import Kool
 
 class RegisterForm(UserCreationForm):
-    first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
+    first_name = forms.CharField()
+    last_name = forms.CharField()
     username = forms.RegexField(
         label='Username', 
         max_length=30, 
@@ -34,9 +34,10 @@ class RegisterForm(UserCreationForm):
         return user
 
 class KoolForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(KoolForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = False
+
     class Meta:
         model = Kool
-        fields = ['content']
-        labels = {
-            'content' : 'Compose Kool',
-        }
+        fields = ['content', 'image']

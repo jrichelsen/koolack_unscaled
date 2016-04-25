@@ -13,10 +13,10 @@ from django.core.files import File
 from koolack_unscaled.models import Profile, Kool
 
 N_KOOL_MIN = 100
-N_KOOL_MAX = 1000
+N_KOOL_MAX = 200
 IMAGE_DIRN = 'test_images'
-N_FOLLOW_MIN = 5
-N_FOLLOW_MAX = 10
+N_FOLLOW_MIN = 10
+N_FOLLOW_MAX = 30
 
 n_users = int(sys.argv[1])
 

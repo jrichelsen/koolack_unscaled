@@ -3,11 +3,7 @@
 {% block titleprepend %}Timeline - {% endblock titleprepend %}
 
 {% block content %}
-<form method="post" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="post">
-</form>
+{% include 'koolack_unscaled/kool_form.html' %}
 
 {% with unfollow_button=True %}
 {% for kool in page_obj %}

@@ -1,17 +1,18 @@
-from django.views.generic import TemplateView, ListView, View
+from django.views.generic import TemplateView, View, ListView, FormView
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.views.generic.edit import CreateView
+from django.views.generic.detail import SingleObjectMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from django.http import HttpResponse
-
 from .models import Profile, Kool, Hashtag
 from .forms import KoolForm
+
+KOOLS_PER_PAGE = 15
 
 class IndexView(TemplateView):
     template_name = 'koolack_unscaled/index.html'
@@ -26,30 +27,16 @@ class IndexView(TemplateView):
             return HttpResponseRedirect(reverse('koolack_unscaled:timeline'))
         return super(IndexView, self).dispatch(request, *args, **kwargs)
 
-class TimelineView(SingleObjectMixin, ListView):
+class TimelineView(CreateView):
     template_name = 'koolack_unscaled/timeline.html'
-    paginate_by = 15
+    model = Kool
+    form_class = KoolForm
+    success_url = reverse_lazy('koolack_unscaled:timeline')
 
-    @method_decorator(never_cache)
-    def get(self, request, *args, **kwargs):
-        self.object = request.user
-        return super(TimelineView, self).get(request, *args, **kwargs)
-
-    def get_queryset(self):
-        return Kool.objects.filter(author__profile__followed_by=self.object.profile)
-
-    def get_context_data(self, **kwargs):
-        context = super(TimelineView, self).get_context_data(**kwargs)
-        context['form'] = KoolForm()
-        return context
-
-    def post(self, request, *args, **kwargs):
-        kool_form = KoolForm(data=request.POST)
-        if kool_form.is_valid():
-            kool = kool_form.save(commit=False)
-            kool.author = request.user
-            kool.save()
-        return HttpResponseRedirect(reverse('koolack_unscaled:timeline'))
+    def form_valid(self, form):
+        print form.fields['image'].required
+        form.instance.author = self.request.user
+        return super(TimelineView, self).form_valid(form)
 
 class UserView(SingleObjectMixin, ListView):
     slug_url_kwarg = 'username'
@@ -81,13 +68,17 @@ class UserView(SingleObjectMixin, ListView):
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         self.object = self.get_object(queryset=User.objects.all())
-        kool_form = KoolForm(data=request.POST)
-        if kool_form.is_valid():
-            kool = kool_form.save(commit=False)
+        form = KoolForm(request.POST, request.FILES)
+        print form
+        if form.is_valid():
+            kool = form.save(commit=False)
             kool.author = request.user
             kool.save()
-        return HttpResponseRedirect(reverse('koolack_unscaled:user', kwargs={'username': self.object.username}))
-
+            return HttpResponseRedirect(reverse('koolack_unscaled:user', kwargs={'username': self.object.username}))
+        else:
+            context = self.get_context_data()
+            context['form'] = form
+            return render(request, 'koolack_unscaled/user.html', context)            
 
 class FollowView(SingleObjectMixin, View):
     model = User
