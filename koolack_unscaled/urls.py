@@ -1,6 +1,7 @@
 from django.conf.urls import url
-import django.contrib.auth.views as auth_views
 from django.views.generic.edit import CreateView
+from django.core.urlresolvers import reverse_lazy
+import django.contrib.auth.views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.conf.urls import patterns
@@ -14,16 +15,16 @@ urlpatterns = [
         name='index'),
     url(r'^register$',
         CreateView.as_view(
-            form_class=forms.RegisterForm,
             template_name='registration/register.html',
-            success_url='/login'),
+            form_class=forms.RegisterForm,
+            success_url=reverse_lazy('koolack_unscaled:timeline')),
         name='register'),
     url(r'^login$',
         auth_views.login,
         name='login'),
     url(r'^logout$',
         auth_views.logout,
-        {'next_page': '/'},
+        {'next_page': reverse_lazy('koolack_unscaled:index')},
         name='logout'),
     url(r'^timeline$',
         login_required(views.TimelineView.as_view()),

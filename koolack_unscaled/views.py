@@ -1,6 +1,7 @@
-from django.views.generic import TemplateView, View, ListView, FormView
+from django.views.generic import TemplateView, View, ListView
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.views.generic.edit import CreateView
+from django.views.generic.list import MultipleObjectMixin
 from django.views.generic.detail import SingleObjectMixin
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import never_cache
@@ -27,11 +28,19 @@ class IndexView(TemplateView):
             return HttpResponseRedirect(reverse('koolack_unscaled:timeline'))
         return super(IndexView, self).dispatch(request, *args, **kwargs)
 
-class TimelineView(CreateView):
+class TimelineView(MultipleObjectMixin, CreateView):
     template_name = 'koolack_unscaled/timeline.html'
     model = Kool
     form_class = KoolForm
+    paginate_by = KOOLS_PER_PAGE
     success_url = reverse_lazy('koolack_unscaled:timeline')
+
+    def get(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        return super(TimelineView, self).get(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return Kool.objects.filter(author__profile__followed_by=self.request.user.profile)
 
     def form_valid(self, form):
         print form.fields['image'].required
