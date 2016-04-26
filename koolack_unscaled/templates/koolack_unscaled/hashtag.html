@@ -1,24 +1,16 @@
 {% extends 'koolack_unscaled/base.html' %}
 
-{% block titleprepend %}#{{ object.tag }} - {% endblock titleprepend %}
+{% block title_prepend %}#{{ object.tag }} - {% endblock title_prepend %}
+{% block page_title %}Kools with #{{ object.tag }}{% endblock page_title %}
 
 {% block content %}
-<h2>Kools with #{{ object.tag }}</h2>
 
-{% for kool in page_obj %}
-    {% include 'koolack_unscaled/kool.html' %}
-{% endfor %}
-
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-        <span class="current">page {{ page_obj.number }} of {{ paginator.num_pages }}</span>
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-        {% endif %}
-    </span>
+<div id="kool-list">
+    {% for kool in page_obj %}
+        {% include 'koolack_unscaled/kool.html' %}
+    {% endfor %}
 </div>
+
+{% include 'koolack_unscaled/pagination.html' %}
 
 {% endblock content %}

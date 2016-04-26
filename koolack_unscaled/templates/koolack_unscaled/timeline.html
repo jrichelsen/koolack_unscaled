@@ -1,16 +1,18 @@
 {% extends 'koolack_unscaled/base.html' %}
 
-{% block titleprepend %}timeline - {% endblock titleprepend %}
+{% block title_prepend %}timeline - {% endblock title_prepend %}
+{% block page_title %}Timeline{% endblock page_title %}
 
 {% block content %}
-<h2>Timeline</h2>
 
 {% include 'koolack_unscaled/kool_form.html' %}
 
 {% with unfollow_button=True %}
-{% for kool in page_obj %}
-    {% include 'koolack_unscaled/kool.html' %}    
-{% endfor %}
+    <div id="kool-list">
+        {% for kool in page_obj %}
+            {% include 'koolack_unscaled/kool.html' %}    
+        {% endfor %}
+    </div>
 {% endwith %}
 
 {% include 'koolack_unscaled/pagination.html' %}

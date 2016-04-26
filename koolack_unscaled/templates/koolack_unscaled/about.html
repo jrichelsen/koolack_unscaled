@@ -1,6 +1,7 @@
 {% extends 'koolack_unscaled/base.html' %}
 
-{% block titleprepend %}about - {% endblock titleprepend %}
+{% block title_prepend %}about - {% endblock title_prepend %}
+{% block page_title %}about{% endblock page_title %}
 
 {% block content %}
 <p>Koolack is a microblogging service created in the Spring of 2016 by two Notre Dame students enrolled in <a href="https://www3.nd.edu/~dthain/courses/cse40822/spring2016/">CSE40822: Cloud Computing</a>. The purpose of this website is not to serve as an actual production microblogging service; it's purpose is to serve as a test application for evaluating performance in the Amazon Web Services. More specifically, we are trying to quantify the speedup attainable by distributing a Django application using Amazon Elastic Beanstalk.</p>

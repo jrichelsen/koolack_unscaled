@@ -1,40 +1,43 @@
-<table>
-    <tr>
-        <td>{{ kool.author.first_name }} {{kool.author.last_name}} (<a href="{% url 'koolack_unscaled:user' kool.author.username %}">@{{ kool.author.username }})</a></td>
-        <td>{{ kool.creation_date|timesince }} ago</td>
+<div class="kool">
+    <div class="kool-info">
+        <div class="kool-author">{{ kool.author.first_name }} {{kool.author.last_name}} (<a href="{% url 'koolack_unscaled:user' kool.author.username %}">@{{ kool.author.username }})</a></div>
+        <div class="kool-timestamp">{{ kool.creation_date|timesince }} ago</div>
         {% if follow_button %}
-            <td>
+            <div class="kool-follow-button-form">
                 <form method="post" action="{% url 'koolack_unscaled:follow' kool.author.username %}">
                     {% csrf_token %}
                     <input type="submit" value="follow">
                 </form>
-            </td>
+            </div>
         {% endif %}
         {% if unfollow_button %}
-            <td>
+            <div class="kool-unfollow-button-form">
                 <form method="post" action="{% url 'koolack_unscaled:unfollow' kool.author.username %}">
                     {% csrf_token %}
                     <input type="submit" value="unfollow">
                 </form>
-            </td>
+            </div>
         {% endif %}
-    </tr>
-    <tr>
-        <td>{{ kool.href_content|safe }}</td>
-        <td>
+    </div>
+
+    <div class="kool-content">
+        <div class="kool-text">{{ kool.href_content|safe }}</div>
+        <div class="kool-ack-count">
             {% if kool.acked_by.count %}
-                    <a href="{% url 'koolack_unscaled:ack' kool.id %}">{{ kool.acked_by.count }} ack{{ kool.acked_by.count|pluralize }}</a></td>
+                    <a href="{% url 'koolack_unscaled:ack' kool.id %}">{{ kool.acked_by.count }} ack{{ kool.acked_by.count|pluralize }}</a>
             {% else %}
                     0 acks
             {% endif %}
-        <td>
+        </div>
+        <div class="kool-ack-button-form">
             <form method="post" action="{% url 'koolack_unscaled:ack' kool.id %}">
                 {% csrf_token %}
                 <input type="submit" value="ack">
             </form>
-        </td>
-    </tr>   
+        </div>
+    </div>
+
     {% if kool.image %}
-        <tr><td><img src="{{ kool.image.url }}"><td></tr>
+        <div class="kool-image"><img src="{{ kool.image.url }}"></div>
     {% endif %}
-</table>
+</div>

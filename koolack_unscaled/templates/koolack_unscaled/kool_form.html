@@ -1,6 +1,8 @@
-<h3>create a Kool:</h3>
-<form method="post" action="" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="post">
-</form>
+<div id="kool-form">
+    <div id="kool-form-title"><h3>create a Kool:</h3></div>
+    <form method="post" action="" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div id="kool-form-fields">{{ form.as_p }}</div>
+        <div id="kool-form-submit-button"><input type="submit" value="post"></div>
+    </form>
+</div>

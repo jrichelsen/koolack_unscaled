@@ -49,4 +49,3 @@ for user_n in xrange(n_users):
 
     for user_n_to_follow in random.sample(xrange(n_users), random.randint(N_FOLLOW_MIN, N_FOLLOW_MAX)):
         my_prof.follows.add(Profile.objects.get(user__username='testuser'+str(user_n_to_follow)))
-

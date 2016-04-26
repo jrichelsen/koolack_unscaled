@@ -3,28 +3,29 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{% block titleprepend %}{% endblock titleprepend %}Koolack Unscaled</title>
+    <title>{% block title_prepend %}{% endblock title_prepend %}Koolack Unscaled</title>
 </head>
 
-<h1><a href="{% url 'koolack_unscaled:index' %}">Koolack Unscaled</a></h1>
-
-{% if request.user.is_authenticated %}
-    <p>logged in as <a href="{% url 'koolack_unscaled:user' request.user.username %}">{{ request.user.username }}</a> (<a href="{% url 'koolack_unscaled:logout' %}">logout</a>)</p>
-{% else %}
-    <p><a href="{% url 'koolack_unscaled:register' %}">register</a></li> or <a href="{% url 'koolack_unscaled:login' %}">login</a></p>
-{% endif %}
-
-<hr>
-
 <body>
-{% block content %}{% endblock content%}
+    <div id="header">
+        <div id="logo"><h1><a href="{% url 'koolack_unscaled:index' %}">Koolack Unscaled</a></h1></div>
+        <div id="login_status">
+            {% if request.user.is_authenticated %}
+                <p>logged in as <a href="{% url 'koolack_unscaled:user' request.user.username %}">{{ request.user.username }}</a> (<a href="{% url 'koolack_unscaled:logout' %}">logout</a>)</p>
+            {% else %}
+                <p><a href="{% url 'koolack_unscaled:register' %}">register</a> or <a href="{% url 'koolack_unscaled:login' %}">login</a></p>
+            {% endif %}
+        </div>
+    </div>
+
+   <div id="page-title"><h2>{% block page_title %}{% endblock page_title%}</h2></div>
+
+   {% block content %}{% endblock content%}
+
+    <div id="footer">
+        <div class="footer-link"><a href="{% url 'koolack_unscaled:about' %}">about Koolack</a></div>
+        <div class="footer-link"><a href="https://www3.nd.edu/~dthain/courses/cse40822/spring2016/">CSE40175 at Notre Dame</a></div>
+    </div>
 </body>
-
-<hr>
-
-<footer>
-    <a href="{% url 'koolack_unscaled:about' %}">about Koolack</a>
-    <a href="https://www3.nd.edu/~dthain/courses/cse40822/spring2016/">CSE40175 at Notre Dame</a>
-</footer>
 
 </html>
