@@ -4,11 +4,11 @@
 {% block page_title %}the following users Acked this Kool:{% endblock page_title %}
 
 {% block content %}
-<div id="acker-list">
+<ul>
     {% for acker_profile in page_obj %}
-        <div class="acker-link"><a href="{% url 'koolack_unscaled:user' acker_profile.user.username %}">{{ acker_profile.user.username }}</a></div>
+        <li><a href="{% url 'koolack_unscaled:user' acker_profile.user.username %}">{{ acker_profile.user.username }}</a></li>
     {% endfor %}
-</div>
+</ul>
 
 {% include 'koolack_unscaled/pagination.html' %}
 

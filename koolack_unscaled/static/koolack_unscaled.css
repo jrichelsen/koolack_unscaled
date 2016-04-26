@@ -1,0 +1,88 @@
+* {
+   font-family: Arial;
+}
+
+a {
+    color: #FF8000;
+}
+
+body {
+    background-color: #3187DC;
+}
+
+#container {
+    width: 95%;
+    margin: auto;
+}
+
+#header {
+    background-color: #BBE6F9;
+    border-radius: 10px;
+    margin: 2px;
+    padding: 5px;
+    border: 2px solid black;
+    width: 100%;
+    display: inline-block;
+}
+
+#logo {
+    float: left;
+}
+
+#login_status {
+    float: right;
+}
+
+#kool-form {
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 10px;
+    background-color: #BBE6F9;
+}
+
+#kool-list {
+    width: 100%;
+}
+
+.kool {
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 10px;
+    background-color: #BBE6F9;
+}
+
+.kool-author {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.kool-follow-button {
+    display: inline-block;
+}
+
+.kool-unfollow-button {
+    display: inline-block;
+}
+
+.kool-timestamp {
+    display: inline-block;
+    font-style: italic;
+    float: right;
+}
+
+.kool-row2 {
+    border-top: groove orange;
+}
+
+#footer {
+    background-color: grey;
+    padding: 5px;
+    text-align: justify;
+    clear: both;
+}
+
+.footer-link {
+    display: inline-block;
+}

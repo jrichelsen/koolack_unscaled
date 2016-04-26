@@ -1,9 +1,8 @@
 <div class="kool">
-    <div class="kool-info">
+    <div class="kool-row1">
         <div class="kool-author">{{ kool.author.first_name }} {{kool.author.last_name}} (<a href="{% url 'koolack_unscaled:user' kool.author.username %}">@{{ kool.author.username }})</a></div>
-        <div class="kool-timestamp">{{ kool.creation_date|timesince }} ago</div>
         {% if follow_button %}
-            <div class="kool-follow-button-form">
+            <div class="kool-follow-button">
                 <form method="post" action="{% url 'koolack_unscaled:follow' kool.author.username %}">
                     {% csrf_token %}
                     <input type="submit" value="follow">
@@ -11,25 +10,25 @@
             </div>
         {% endif %}
         {% if unfollow_button %}
-            <div class="kool-unfollow-button-form">
+            <div class="kool-unfollow-button">
                 <form method="post" action="{% url 'koolack_unscaled:unfollow' kool.author.username %}">
                     {% csrf_token %}
                     <input type="submit" value="unfollow">
                 </form>
             </div>
         {% endif %}
+        <div class="kool-timestamp">{{ kool.creation_date|timesince }} ago</div>
     </div>
-
-    <div class="kool-content">
-        <div class="kool-text">{{ kool.href_content|safe }}</div>
+    <div class="kool-row2">
+        <div class="kool-content">{{ kool.href_content|safe }}</div>
         <div class="kool-ack-count">
             {% if kool.acked_by.count %}
-                    <a href="{% url 'koolack_unscaled:ack' kool.id %}">{{ kool.acked_by.count }} ack{{ kool.acked_by.count|pluralize }}</a>
+                <a href="{% url 'koolack_unscaled:ack' kool.id %}">{{ kool.acked_by.count }} ack{{ kool.acked_by.count|pluralize }}</a>
             {% else %}
-                    0 acks
+                0 acks
             {% endif %}
         </div>
-        <div class="kool-ack-button-form">
+        <div class="kool-ack-button">
             <form method="post" action="{% url 'koolack_unscaled:ack' kool.id %}">
                 {% csrf_token %}
                 <input type="submit" value="ack">
@@ -38,6 +37,6 @@
     </div>
 
     {% if kool.image %}
-        <div class="kool-image"><img src="{{ kool.image.url }}"></div>
+        <div class="kool-row3-image"><img src="{{ kool.image.url }}"></div>
     {% endif %}
 </div>

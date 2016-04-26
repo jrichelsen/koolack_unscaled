@@ -6,25 +6,28 @@
 {% block content %}
 
 <div id="relationship-info">
-    <div id="follows-title" class="relationship-info-list-title">follows:</div>
+    <div id="follows-title" class="relationship-info-title">follows:</div>
     <div id="follows-list" class="relationship-info-list">
-        {% for follows_prof in page_user.profile.follows.all|slice:":8" %}
-            <div class="follows-list-entry"><a href="{% url 'koolack_unscaled:user' follows_prof.user.username %}">{{ follows_prof.user.username }}</a></div>
-        {% endfor %}
+        <ul>
+            {% for follows_prof in page_user.profile.follows.all|slice:":8" %}
+                <li><a href="{% url 'koolack_unscaled:user' follows_prof.user.username %}">{{ follows_prof.user.username }}</a></li>
+            {% endfor %}
+            {% if page_user.profile.follows.all.8 %}
+                <li>{{ page_user.profile.follows.count|add:"-8" }} more</li>
+            {% endif %}
+        </ul>
     </div>
-    {% if page_user.profile.follows.all.8 %}
-        <div id="more-follows-count" class="relationship-info-more-count">{{ page_user.profile.follows.count|add:"-8" }} more</div>
-    {% endif %}
-
-    <div id="follewed-title" class="relationship-info-list-title">followed by:</div>
+    <div id="follewed-title" class="relationship-info-title">followed by:</div>
     <div id="followed-list" class="relationship-info-list">
-        {% for followed_by_prof in page_user.profile.followed_by.all|slice:":8"%}
-            <div class="followed-list-entry"><a href="{% url 'koolack_unscaled:user' followed_by_prof.user.username %}">{{ followed_by_prof.user.username }}</a></div>
-        {% endfor %}
+        <ul>
+            {% for followed_by_prof in page_user.profile.followed_by.all|slice:":8"%}
+                <li><a href="{% url 'koolack_unscaled:user' followed_by_prof.user.username %}">{{ followed_by_prof.user.username }}</a></li>
+            {% endfor %}
+            {% if page_user.profile.followed_by.all.8 %}
+                <li>{{ page_user.profile.followed_by.count|add:"-8" }} more</li>
+            {% endif %}
+        </ul>
     </div>
-    {% if page_user.profile.followed_by.all.8 %}
-        <div id="more-followed-count" class="relationship-info-more-count">{{ page_user.profile.followed_by.count|add:"-8" }} more</div>
-    {% endif %}
 </div>
 
 {% if form %}
