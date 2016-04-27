@@ -39,7 +39,8 @@ for user_n in xrange(n_users):
 
     for kool_n in xrange(random.randint(N_KOOL_MIN, N_KOOL_MAX)):
         my_user.kool_set.create(
-            content='this is #test #kool #'+str(kool_n)+' for me')
+            content='this is #test #kool #'+str(kool_n)+' for me',
+            image=random.choice(images))
 
 # make Profiles follow one another (all Profiles must be created first)
 print 'creating follow connections'

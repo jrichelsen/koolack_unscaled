@@ -174,6 +174,7 @@ philos = [
 
 # create Profiles (and the Users they contain) and their Kools
 for philo in philos:
+    print 'creating ' + philo.username
     my_user = User(
         username=philo.username,
         first_name=philo.first_name,
@@ -185,9 +186,9 @@ for philo in philos:
     my_prof.save()
 
     for kool_content in philo.kool_contents:
+        print 'creating Kool ' + kool_content
         my_user.kool_set.create(
-            content=kool_content,
-            image=random.choice(images))
+            content=kool_content)
 
 # make Profiles follow one another (all Profiles must be created first)
 for philo in philos:

@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'koolack_unscaled',
+#    'storages',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,8 +81,22 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'koolack_scaled_db',
+#        'USER': 'koolack_scaled',
+#        'PASSWORD': 'koolack_scaled_rds_pw',
+#        'HOST': 'koolack-scaled-rds.cqlw8hl04rjh.us-west-2.rds.amazonaws.com',
+#        'PORT': '3306',
+#    }
 }
 
+#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+#AWS_S3_SECURE_URLS = False
+#AWS_QUERYSTRING_AUTH = False
+#AWS_S3_ACCESS_KEY_ID = 'AKIAI6SQ4GWXHXZYQP6A'
+#AWS_S3_SECRET_ACCESS_KEY = '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'
+#AWS_STORAGE_BUCKET_NAME = 'koolack-scaled-s3'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
