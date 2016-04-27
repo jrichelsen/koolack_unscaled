@@ -12,11 +12,11 @@ from django.core.files import File
 
 from koolack_unscaled.models import Profile, Kool
 
-N_KOOL_MIN = 100
+N_KOOL_MIN = 10
 N_KOOL_MAX = 200
 IMAGE_DIRN = 'test_images'
-N_FOLLOW_MIN = 10
-N_FOLLOW_MAX = 30
+N_FOLLOW_MIN = 1
+N_FOLLOW_MAX = 100
 
 n_users = int(sys.argv[1])
 
@@ -39,7 +39,7 @@ for user_n in xrange(n_users):
 
     for kool_n in xrange(random.randint(N_KOOL_MIN, N_KOOL_MAX)):
         my_user.kool_set.create(
-            content='yep #cool KOOL #'+str(kool_n),
+            content='this is #test #kool #'+str(kool_n)+' for me',
             image=random.choice(images))
 
 # make Profiles follow one another (all Profiles must be created first)
